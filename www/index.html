@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+  <script src="components/loader.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/dbTable.js"></script>
+
+  <link rel="stylesheet" href="components/loader.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body ng-app="MyApp">
+
+	<ons-page>
+		<ons-toolbar>
+			<div class="center">DB</div>
+		</ons-toolbar>
+		
+		<div style="margin: 10px;">
+			<ons-button ui-sref="person">人物</ons-button>
+			<ons-button ui-sref="url">URL</ons-button>
+		</div>
+		
+		<div style="padding: 20px 10px;" ui-view>
+			<h1>使い方</h1>
+			<ul>
+				<li>各画面では、初期処理として、全件データ検索を行います。</li>
+				<li>画面上部の入力フォームにデータを入力して…
+					<ul>
+						<li>「登録」ボタンを押下すると、新規登録（INSERT）されます。</li>
+						<li>「検索」ボタンを押下すると、条件付き検索されます。</li>
+					</ul>
+				</li></li>
+				<li>検索結果の項目を押下すると、入力フォームに値が設定されます。
+					<ul>
+						<li>値を変更し、「登録」ボタンを押下すると、更新（UPDATE）されます。</li>
+						<li>「削除」ボタンを押下すると、削除（DELETE）されます。</li>
+					</ul>
+				</li>
+			</ul>
+			
+		</div>
+
+	</ons-page>
+	
+	<ons-template id="person.html">
+		<div ng-controller="PersonController">
+			<ons-input type="text" ng-model="person_sei" modifier="material" float placeholder="姓"></ons-input>
+			<ons-input type="text" ng-model="person_mei" modifier="material" float placeholder="名"></ons-input>
+			<ons-input type="date" ng-model="person_birthday" modifier="material" float placeholder="生年月日"></ons-input>
+			<ons-select ng-model="person_sex" modifier="material" >
+				<option value="1">男性</option>
+				<option value="2">女性</option>
+				<option value="0">どちらでもない</option>
+			</ons-select>
+			<ons-button ng-click="save();">登録</ons-button>
+			<ons-button ng-click="delete();">削除</ons-button>
+			<ons-button ng-click="search();">検索</ons-button>
+			[{{person_id}}]
+			
+			<ul>
+				<li ng-repeat="r in results" ng-click="modify(r);">
+					{{r.col_id}}: {{r.col_sei}}, {{r.col_mei}}, {{r.col_birthday}}, {{r.col_sex}}
+				</li>
+			</ul>
+			
+		</div>
+	</ons-template>
+	
+	<ons-template id="url.html">
+		<div ng-controller="UrlController">
+			<ons-input type="text" ng-model="url_name" modifier="material" float placeholder="名称"></ons-input>
+			<ons-input type="url" ng-model="url_url" modifier="material" float placeholder="URL"></ons-input>
+			<ons-button ng-click="save();">登録</ons-button>
+			<ons-button ng-click="delete();">削除</ons-button>
+			<ons-button ng-click="search();">検索</ons-button>
+			[{{url_id}}]
+			
+			<ul>
+				<li ng-repeat="r in results" ng-click="modify(r);">
+					{{r.col_id}}: {{r.col_name}}, {{r.col_url}}
+				</li>
+			</ul>
+			
+		</div>
+	</ons-template>
+	
+</body>	
+</html>
